@@ -14,13 +14,13 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="String 特点 和 常用方法研究123456789public final class String    implements java.io.Serializable, Comparable&lt;String&gt;, CharSequence &amp;#123;    &#x2F;&#x2F; 用于存储字符串的值    private final char value[];    &#x2F;&#x2F; 缓存字符串的 hash">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2020/10/04/Hello-World-0/Hello-World-0.assets/20201002093218.png">
-<meta property="og:image" content="http://example.com/2020/10/04/Hello-World-0/Hello-World-0.assets/20201002093305.png">
+<meta property="og:image" content="https://gitee.com/zyxscuec/image/raw/master//img/20201002093218.png">
+<meta property="og:image" content="https://gitee.com/zyxscuec/image/raw/master//img/20201002093305.png">
 <meta property="article:published_time" content="2020-10-04T10:30:07.000Z">
-<meta property="article:modified_time" content="2020-10-04T10:31:14.560Z">
+<meta property="article:modified_time" content="2020-10-05T03:33:10.595Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/10/04/Hello-World-0/Hello-World-0.assets/20201002093218.png">
+<meta name="twitter:image" content="https://gitee.com/zyxscuec/image/raw/master//img/20201002093218.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -159,7 +159,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">&quot;java&quot;</span>;</span><br><span class="line">String s2 = <span class="string">&quot;java&quot;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>只有字符串是不可变时，我们才能实现字符串常量池，字符串常量池可以为我们缓存字符串，提高程序的运行效率，如下图所示：</p>
-<p><img src="Hello-World-0.assets/20201002093218.png"></p>
+<p><img src="https://gitee.com/zyxscuec/image/raw/master//img/20201002093218.png"></p>
 <p>试想一下如果 String 是可变的，那当 s1 的值修改之后，s2 的值也跟着改变了，这样就和我们预期的结果不相符了，因此也就没有办法实现字符串常量池的功能了。</p>
 <h4 id="3-String-和-StringBuilder、StringBuffer-的区别"><a href="#3-String-和-StringBuilder、StringBuffer-的区别" class="headerlink" title="3. String 和 StringBuilder、StringBuffer 的区别"></a>3. String 和 StringBuilder、StringBuffer 的区别</h4><p>因为 String 类型是不可变的，所以在字符串拼接的时候如果使用 String 的话性能会很低，因此我们就需要使用另一个数据类型 StringBuffer，它提供了 append 和 insert 方法可用于字符串的拼接，它使用 synchronized 来保证线程安全，如下源码所示：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> StringBuffer <span class="title">append</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">    toStringCache = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">super</span>.append(String.valueOf(obj));</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> StringBuffer <span class="title">append</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">    toStringCache = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">super</span>.append(str);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -169,7 +169,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">&quot;Java&quot;</span>);</span><br><span class="line">String s2 = s1.intern();</span><br><span class="line">String s3 = <span class="string">&quot;Java&quot;</span>;</span><br><span class="line">System.out.println(s1 == s2); <span class="comment">// false</span></span><br><span class="line">System.out.println(s2 == s3); <span class="comment">// true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>它们在 JVM 存储的位置，如下图所示：</p>
-<p><img src="Hello-World-0.assets/20201002093305.png" alt="img"></p>
+<p><img src="https://gitee.com/zyxscuec/image/raw/master//img/20201002093305.png" alt="img"></p>
 <blockquote>
 <p>小贴士：JDK 1.7 之后把永生代换成的元空间，把字符串常量池从方法区移到了 Java 堆上。</p>
 </blockquote>
@@ -184,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/10/04/Hello-World-0/" data-id="ckfuyu8410000pctv67f13lkr" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/10/04/Hello-World-0/" data-id="ckfvzbxjj0000fstvggbw202d" class="article-share-link">Share</a>
       
       
     </footer>
